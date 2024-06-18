@@ -1,11 +1,14 @@
 package data
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type cliCommand struct {
 	Name        string
 	Description string
-	callback    func() error
+	Callback    func() error
 }
 
 func GetCommands() map[string]cliCommand {
@@ -13,22 +16,27 @@ func GetCommands() map[string]cliCommand {
 		"help": {
 			Name:        "help",
 			Description: "Displays a help message",
-			callback:    commandHelp,
+			Callback:    commandHelp,
 		},
 		"exit": {
 			Name:        "exit",
 			Description: "Exit the Pokedex",
-			callback:    commandExit,
+			Callback:    commandExit,
 		},
 	}
 }
 
 func commandHelp() error {
-	fmt.Println("Available commands:")
+	fmt.Println("Welcome to the Pokedex!")
+	fmt.Println("usage:")
+	fmt.Println("")
+	for _, command := range GetCommands() {
+		fmt.Println(command.Name + ": " + command.Description)
+	}
 	return nil
 }
 
 func commandExit() error {
-	fmt.Println("Available exit:")
+	os.Exit(0)
 	return nil
 }
