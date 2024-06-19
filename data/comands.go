@@ -1,8 +1,17 @@
 package data
 
-import (
-	"fmt"
-	"os"
+type ApiStruct struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous any    `json:"previous"`
+	Results  []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"results"`
+}
+
+const (
+	LOCATION_URL = "https://pokeapi.co/api/v2/location-area"
 )
 
 type cliCommand struct {
@@ -16,27 +25,17 @@ func GetCommands() map[string]cliCommand {
 		"help": {
 			Name:        "help",
 			Description: "Displays a help message",
-			Callback:    commandHelp,
+			Callback:    CommandHelp,
 		},
 		"exit": {
 			Name:        "exit",
 			Description: "Exit the Pokedex",
-			Callback:    commandExit,
+			Callback:    CommandExit,
+		},
+		"map": {
+			Name:        "map",
+			Description: "Displays a map of the region",
+			Callback:    CommandMap,
 		},
 	}
-}
-
-func commandHelp() error {
-	fmt.Println("Welcome to the Pokedex!")
-	fmt.Println("usage:")
-	fmt.Println("")
-	for _, command := range GetCommands() {
-		fmt.Println(command.Name + ": " + command.Description)
-	}
-	return nil
-}
-
-func commandExit() error {
-	os.Exit(0)
-	return nil
 }
