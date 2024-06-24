@@ -9,7 +9,7 @@ import (
 	"github.com/hw/go-repl/data"
 )
 
-func startRepl() {
+func startRepl(cfg *data.Config) {
 
 	var exit = false
 	for !exit {
@@ -21,17 +21,20 @@ func startRepl() {
 		if err != nil {
 			fmt.Println(err)
 		}
-
+		inputSlice := []string{}
 		scanner := bufio.NewScanner(strings.NewReader(messageWithoutLineBreak))
 		scanner.Split(bufio.ScanWords)
 		for scanner.Scan() {
 			line := scanner.Text()
-			fmt.Println(line)
+			inputSlice = append(inputSlice, line)
+		}
+		if len(inputSlice) > 1 {
+			fmt.Println("this is " + inputSlice[1])
 		}
 		res := data.GetCommands()
 		command, exists := res[messageWithoutLineBreak]
 		if exists {
-			command.Callback()
+			command.Callback(cfg)
 		} else {
 			fmt.Println("can't find the command ")
 		}

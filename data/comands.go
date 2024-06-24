@@ -1,23 +1,17 @@
 package data
 
-type ApiStruct struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous any    `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
-}
+import "github.com/hw/go-repl/internal"
 
-const (
-	LOCATION_URL = "https://pokeapi.co/api/v2/location-area"
-)
+type Config struct {
+	PokeapiClient    internal.Client
+	NextLocationsURL *string
+	PrevLocationsURL *string
+}
 
 type cliCommand struct {
 	Name        string
 	Description string
-	Callback    func() error
+	Callback    func(*Config) error
 }
 
 func GetCommands() map[string]cliCommand {
@@ -30,12 +24,17 @@ func GetCommands() map[string]cliCommand {
 		"exit": {
 			Name:        "exit",
 			Description: "Exit the Pokedex",
-			Callback:    CommandExit,
+			Callback:    func(config *Config) error { return CommandExit() },
 		},
 		"map": {
 			Name:        "map",
 			Description: "Displays a map of the region",
-			Callback:    CommandMap,
+			Callback:    CommandMapf,
+		},
+		"mapb": {
+			Name:        "mapb",
+			Description: "Get the previous page of locations",
+			Callback:    CommandMapb,
 		},
 		"catch": {
 			Name:        "catch",

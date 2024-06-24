@@ -1,36 +1,43 @@
 package data
 
 import (
-	"encoding/json"
+	"errors"
 	"fmt"
-	"io"
-	"log"
-	"net/http"
 )
 
-func CommandMap() error {
-	res, err := http.Get(LOCATION_URL)
+func CommandMapf(cfg *Config) error {
+	res, err := cfg.PokeapiClient.GetLocationList(cfg.NextLocationsURL)
+
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	body, err := io.ReadAll(res.Body)
-	res.Body.Close()
+	cfg.NextLocationsURL = res.Next
+	cfg.PrevLocationsURL = res.Previous
 
-	apiStruct := ApiStruct{}
-	errUnmarshal := json.Unmarshal(body, &apiStruct)
-	if errUnmarshal != nil {
-		fmt.Println(err)
-	}
-
-	if res.StatusCode > 299 {
-		log.Fatalf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
-	}
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, location := range apiStruct.Results {
+	for _, location := range res.Results {
 		fmt.Println(location.Name)
+	}
+
+	return nil
+}
+
+func CommandMapb(cfg *Config) error {
+
+	if cfg.PrevLocationsURL == nil {
+		return errors.New("you're on the first page")
+	}
+
+	locationResp, err := cfg.PokeapiClient.GetLocationList(cfg.PrevLocationsURL)
+	if err != nil {
+		return err
+	}
+
+	cfg.NextLocationsURL = locationResp.Next
+	cfg.PrevLocationsURL = locationResp.Previous
+
+	for _, loc := range locationResp.Results {
+		fmt.Println(loc.Name)
 	}
 	return nil
 }

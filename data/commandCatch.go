@@ -1,5 +1,5 @@
 package data
 
-func CommandCatch() error {
+func CommandCatch(cfg *Config) error {
 	return nil
 }
