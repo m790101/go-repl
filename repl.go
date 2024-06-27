@@ -28,11 +28,9 @@ func startRepl(cfg *data.Config) {
 			line := scanner.Text()
 			inputSlice = append(inputSlice, line)
 		}
-		if len(inputSlice) > 1 {
-			fmt.Println("this is " + inputSlice[1])
-		}
 		res := data.GetCommands()
-		command, exists := res[messageWithoutLineBreak]
+		command, exists := res[inputSlice[0]]
+		cfg.InputSlice = inputSlice
 		if exists {
 			command.Callback(cfg)
 		} else {

@@ -6,6 +6,7 @@ type Config struct {
 	PokeapiClient    internal.Client
 	NextLocationsURL *string
 	PrevLocationsURL *string
+	InputSlice       []string
 }
 
 type cliCommand struct {
@@ -35,6 +36,11 @@ func GetCommands() map[string]cliCommand {
 			Name:        "mapb",
 			Description: "Get the previous page of locations",
 			Callback:    CommandMapb,
+		},
+		"explore": {
+			Name:        "explore",
+			Description: "explore the location",
+			Callback:    CommandExplore,
 		},
 		"catch": {
 			Name:        "catch",

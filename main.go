@@ -8,9 +8,9 @@ import (
 )
 
 func main() {
-	pokeClient := internal.NewClient(5 * time.Second)
+	pokeClient := internal.NewClient(5*time.Second, time.Minute*5)
 	cfg := &data.Config{
-		PokeapiClient: pokeClient, // Fix: Change httpClient to HTTPClient
+		PokeapiClient: pokeClient,
 	}
 	startRepl(cfg)
 }

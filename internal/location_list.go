@@ -6,11 +6,23 @@ import (
 	"net/http"
 )
 
-func (c Client) GetLocationList(pageUrl *string) (RestApiLocation, error) {
+func (c *Client) GetLocationList(pageUrl *string) (RestApiLocation, error) {
+
 	url := BASE_URL + "location-area"
 	if pageUrl != nil {
 		url = *pageUrl
 	}
+
+	if val, ok := c.cache.Get(url); ok {
+		locationsResp := RestApiLocation{}
+		err := json.Unmarshal(val, &locationsResp)
+		if err != nil {
+			return RestApiLocation{}, err
+		}
+
+		return locationsResp, nil
+	}
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return RestApiLocation{}, err
@@ -26,12 +38,12 @@ func (c Client) GetLocationList(pageUrl *string) (RestApiLocation, error) {
 	if err != nil {
 		return RestApiLocation{}, err
 	}
-
 	apiStruct := RestApiLocation{}
 	err = json.Unmarshal(body, &apiStruct)
 	if err != nil {
 		return RestApiLocation{}, err
 	}
+	c.cache.Add(url, body)
 	return apiStruct, nil
 
 }
