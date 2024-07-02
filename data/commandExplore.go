@@ -3,6 +3,10 @@ package data
 import "fmt"
 
 func CommandExplore(cfg *Config) error {
+	if len(cfg.InputSlice) < 2 {
+		fmt.Println("no location to explore")
+		return nil
+	}
 	location := cfg.InputSlice[1]
 
 	fmt.Printf("\n")
@@ -21,4 +25,8 @@ func CommandExplore(cfg *Config) error {
 		fmt.Println("- " + pokemon.Pokemon.Name)
 	}
 	return nil
+}
+
+func lens(s []string) {
+	panic("unimplemented")
 }
