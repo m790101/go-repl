@@ -1,12 +1,16 @@
 package data
 
-import "github.com/hw/go-repl/internal"
+import (
+	"github.com/hw/go-repl/internal"
+	"github.com/hw/go-repl/internal/pokelist"
+)
 
 type Config struct {
 	PokeApiClient    internal.Client
 	NextLocationsURL *string
 	PrevLocationsURL *string
 	InputSlice       []string
+	CatchList        pokelist.PokemonCatchList
 }
 
 type cliCommand struct {
