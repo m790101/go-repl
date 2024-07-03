@@ -13,7 +13,7 @@ func CommandExplore(cfg *Config) error {
 	fmt.Println("Exploring " + location + "...")
 	fmt.Printf("\n")
 
-	pokemonList, err := cfg.PokeapiClient.GetPokemonList(location)
+	pokemonList, err := cfg.PokeApiClient.GetPokemonList(location)
 
 	if err != nil {
 
@@ -25,8 +25,4 @@ func CommandExplore(cfg *Config) error {
 		fmt.Println("- " + pokemon.Pokemon.Name)
 	}
 	return nil
-}
-
-func lens(s []string) {
-	panic("unimplemented")
 }

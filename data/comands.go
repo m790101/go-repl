@@ -3,7 +3,7 @@ package data
 import "github.com/hw/go-repl/internal"
 
 type Config struct {
-	PokeapiClient    internal.Client
+	PokeApiClient    internal.Client
 	NextLocationsURL *string
 	PrevLocationsURL *string
 	InputSlice       []string

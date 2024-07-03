@@ -17,19 +17,20 @@ func CommandCatch(cfg *Config) error {
 	fmt.Println("Catching " + name + "...")
 	fmt.Printf("\n")
 
-	res, err := cfg.PokeapiClient.GetPokemonInfo(name)
+	res, err := cfg.PokeApiClient.GetPokemonInfo(name)
 	if err != nil {
 		fmt.Println("error when geting the info...")
 	}
 	// use base_experience to get the catch chance
 	baseEx := res.BaseExperience
 
-	fmt.Printf("baseEx is %d\n", baseEx)
+	// fmt.Printf("baseEx is %d\n", baseEx)
 	t := time.Now().UnixNano()
 	r1 := rand.New(rand.NewSource(t))
 	num := r1.Intn(200)
 	// fmt.Println(num)
 	// determine whether its a success
+	time.Sleep(1 * time.Second)
 	if num > baseEx {
 		fmt.Println("pikachu was caught!")
 	} else {

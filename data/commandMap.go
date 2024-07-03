@@ -6,7 +6,7 @@ import (
 )
 
 func CommandMapf(cfg *Config) error {
-	res, err := cfg.PokeapiClient.GetLocationList(cfg.NextLocationsURL)
+	res, err := cfg.PokeApiClient.GetLocationList(cfg.NextLocationsURL)
 
 	if err != nil {
 		return err
@@ -28,7 +28,7 @@ func CommandMapb(cfg *Config) error {
 		return errors.New("you're on the first page")
 	}
 
-	locationResp, err := cfg.PokeapiClient.GetLocationList(cfg.PrevLocationsURL)
+	locationResp, err := cfg.PokeApiClient.GetLocationList(cfg.PrevLocationsURL)
 	if err != nil {
 		return err
 	}
