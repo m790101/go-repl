@@ -20,10 +20,10 @@ func CommandCatch(cfg *Config) error {
 	res, err := cfg.PokeApiClient.GetPokemonInfo(input)
 	if err != nil {
 		fmt.Println("error when geting the info...")
+		return err
 	}
 	// use base_experience to get the catch chance
 	baseEx := res.BaseExperience
-	name := res.Name
 
 	// fmt.Printf("baseEx is %d\n", baseEx)
 	t := time.Now().UnixNano()
@@ -33,9 +33,11 @@ func CommandCatch(cfg *Config) error {
 	// determine whether its a success
 	time.Sleep(1 * time.Second)
 	if num > baseEx {
-		fmt.Println(name + " was caught!")
-		cfg.CatchList.Add(name)
+		fmt.Println(res.Name + " was caught!")
+		cfg.CatchList.Add(res)
 		// catchList := cfg.CatchList.GetAll()
+		// fmt.Println(res.Stats[0].BaseStat)
+		// fmt.Println(res.Stats[0].Stat.Name)
 		// fmt.Println(catchList)
 
 	} else {

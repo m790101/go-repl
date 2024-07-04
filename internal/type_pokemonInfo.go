@@ -32,7 +32,14 @@ type RestPokemonInfo struct {
 	} `json:"species"`
 	Sprites struct {
 	} `json:"sprites"`
-	Stats []interface{} `json:"stats"`
+	Stats []struct {
+		BaseStat int `json:"base_stat"`
+		Effort   int `json:"effort"`
+		Stat     struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"stat"`
+	} `json:"stats"`
 	Types []struct {
 		Slot int `json:"slot"`
 		Type struct {

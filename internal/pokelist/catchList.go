@@ -1,7 +1,26 @@
 package pokelist
 
+import "github.com/hw/go-repl/internal"
+
 type Pokemon struct {
-	Name string
+	Name   string
+	Height int
+	Stats  []struct {
+		BaseStat int `json:"base_stat"`
+		Effort   int `json:"effort"`
+		Stat     struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"stat"`
+	} `json:"stats"`
+	Types []struct {
+		Slot int `json:"slot"`
+		Type struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"type"`
+	} `json:"types"`
+	Weight int `json:"weight"`
 }
 
 type PokemonCatchList struct {
@@ -17,12 +36,15 @@ func NewCatchList() PokemonCatchList {
 	return c
 }
 
-func (c *PokemonCatchList) Add(name string) {
-	// c.mux.Lock()
-	c.CatchList[name] = Pokemon{
-		Name: name,
+func (c *PokemonCatchList) Add(data internal.RestPokemonInfo) {
+
+	c.CatchList[data.Name] = Pokemon{
+		Name:   data.Name,
+		Height: data.Height,
+		Stats:  data.Stats,
+		Types:  data.Types,
+		Weight: data.Weight,
 	}
-	// defer c.mux.Unlock()
 }
 
 func (c *PokemonCatchList) GetAll() []string {
@@ -31,4 +53,9 @@ func (c *PokemonCatchList) GetAll() []string {
 		slice = append(slice, p.Name)
 	}
 	return slice
+}
+
+func (c *PokemonCatchList) Get(name string) Pokemon {
+
+	return c.CatchList[name]
 }
